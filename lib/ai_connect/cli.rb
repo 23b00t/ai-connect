@@ -41,7 +41,7 @@ module AIConnect
     def usage
       <<~USAGE
         Usage:
-          connect.rb inline [--comment|-c] [file_path]
+          connect.rb inline [--comment|-c|--doc-comment|-dc] [file_path]
           connect.rb chat [file_path]
       USAGE
     end
