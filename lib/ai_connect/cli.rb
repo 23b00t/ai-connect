@@ -42,7 +42,7 @@ module AIConnect
       <<~USAGE
         Usage:
           connect.rb inline [--comment|-c|--doc-comment|-dc] [file_path]
-          connect.rb chat [file_path]
+          connect.rb chat
       USAGE
     end
   end
