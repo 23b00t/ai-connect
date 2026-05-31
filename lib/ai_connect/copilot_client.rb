@@ -5,6 +5,7 @@ require "open3"
 module AIConnect
   class CopilotClient
     DEFAULT_MODEL = "gpt-4.1"
+    SUGGEST_MODEL = "gpt-5-mini"
     CHAT_TOOLS = "view"
 
     def initialize(model: DEFAULT_MODEL)

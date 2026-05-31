@@ -32,10 +32,11 @@ module AIConnect
           arguments: arguments,
           file_path: file_path
         )
+        client = CopilotClient.new(model: copilot_model_for(options))
 
         # Send prompt to Copilot and clean the markdown response
         response = MarkdownResponse.clean(
-          CopilotClient.new.ask(prompt, cwd: copilot_cwd_for(file_path)),
+          client.ask(prompt, cwd: copilot_cwd_for(file_path)),
           strip: !options[:suggest]
         )
 
@@ -130,6 +131,12 @@ module AIConnect
 
       def suggesting?(options)
         options[:suggest]
+      end
+
+      def copilot_model_for(options)
+        return CopilotClient::SUGGEST_MODEL if suggesting?(options)
+
+        CopilotClient::DEFAULT_MODEL
       end
 
       def echo_stdin?(options)
