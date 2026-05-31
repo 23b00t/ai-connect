@@ -9,30 +9,55 @@ require_relative "base"
 module AIConnect
   module Commands
     class Inline < Base
+      # Executes the main logic for the Inline command.
+      #
+      # Parses command-line options, determines the file format, gathers context,
+      # builds a prompt for Copilot, sends the prompt, and outputs the response.
+      # Handles annotation and implementation modes, as well as error handling for
+      # option parsing and Copilot client errors.
+      #
+      # @return [Integer] Exit code (0 for success, 1 for error)
       def call
+        # Parse command-line options and extract file path
         options, file_path = parse_options(argv)
+        # Determine the format based on the file path
         format = format_for(file_path)
+        # Gather context information for the file
         context = context_for(file_path)
+        # Build the prompt for Copilot using format, context, and options
         prompt = build_prompt(format: format, context: context, options: options)
 
+        # Send prompt to Copilot and clean the markdown response
         response = MarkdownResponse.clean(CopilotClient.new.ask(prompt))
 
+        # If not in annotation mode, output stdin contents
         unless annotating?(options)
           stdout.puts stdin
         end
+        # Output Copilot's response
         stdout.puts response
-        0
+        0 # Success exit code
       rescue OptionParser::ParseError => e
+        # Handle option parsing errors
         stderr.puts e.message
         stderr.puts usage
-        1
+        1 # Error exit code
       rescue CopilotClient::Error => e
+        # Handle Copilot client errors
         stderr.puts "Copilot error: #{e.message}"
-        1
+        1 # Error exit code
       end
 
       private
 
+      # Parses command-line options for commenting and documentation features.
+      # 
+      # @param arguments [Array<String>] The command-line arguments to parse.
+      # @return [Array<Hash, String>] A tuple containing the options hash and the first remaining argument.
+      # 
+      # Recognized options:
+      #   -c, --comment       # Comment the selected code
+      #   -dc, --doc-comment  # Add doc comments using language best practices
       def parse_options(arguments)
         options = { comment: false, doc_comment: false }
         remaining = arguments.dup

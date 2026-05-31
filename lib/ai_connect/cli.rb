@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "commands/chat"
 require_relative "commands/inline"
 
 module AIConnect
@@ -24,8 +23,6 @@ module AIConnect
       command = case command_name
       when "inline"
         Commands::Inline.new(argv: command_args, stdin: stdin, cwd: cwd, stdout: stdout, stderr: stderr)
-      when "chat"
-        Commands::Chat.new(argv: command_args, stdin: stdin, cwd: cwd, stdout: stdout, stderr: stderr)
       else
         stderr.puts usage
         return 1
@@ -42,7 +39,6 @@ module AIConnect
       <<~USAGE
         Usage:
           connect.rb inline [--comment|-c|--doc-comment|-dc] [file_path]
-          connect.rb chat
       USAGE
     end
   end
