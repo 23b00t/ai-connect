@@ -29,6 +29,12 @@ module AIConnect
 
         File.read(expanded_path)
       end
+
+      def copilot_cwd_for(file_path)
+        return cwd if file_path.nil?
+
+        File.dirname(File.expand_path(file_path, cwd))
+      end
     end
   end
 end

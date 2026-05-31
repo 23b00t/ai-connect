@@ -39,6 +39,7 @@ module AIConnect
       <<~USAGE
         Usage:
           connect.rb inline [--comment|-c|--doc-comment|-dc] [file_path]
+          connect.rb inline --suggest|-s CURSOR_LINE_NUMBER CURSOR_COLUMN FILE_PATH
       USAGE
     end
   end

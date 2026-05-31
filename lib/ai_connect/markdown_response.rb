@@ -4,9 +4,10 @@ module AIConnect
   module MarkdownResponse
     module_function
 
-    def clean(text)
+    def clean(text, strip: true)
       match = text.match(/```[a-zA-Z0-9_+-]*\n(.*?)```/m)
-      match ? match[1].strip : text.strip
+      body = match ? match[1] : text
+      strip ? body.strip : body
     end
   end
 end
